@@ -1,8 +1,31 @@
-import { Button, Card, Table, Tabs, TextInput } from 'flowbite-react'
-import React from 'react'
+import { Button, Card, Pagination, Table, Tabs, TextInput } from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
 import {HiSearch, HiFilter} from 'react-icons/hi'
+import apiRequest from '../helpers/HttpRequestHelper'
 
 const Transactions = () => {
+  const [transactions, setTransactions] = useState([])
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onPageChange = (page) => setCurrentPage(page);
+
+  let pages = Math.ceil(transactions.length/20)
+  console.log(pages);
+  useEffect(()=>{
+    const fetchTransactions =async () =>{
+      let token = localStorage.getItem("token")
+      console.log(token);
+      let response = await apiRequest("get","/transactions/all",null,{"Authorization":`Bearer ${token}`})
+      setTransactions(response.data)
+      console.log(response.data)
+    }
+    fetchTransactions()
+  }, [currentPage, 10])
+
+  const paginatedTransactions = transactions.slice(
+    (currentPage - 1) * 10,
+    currentPage * 10
+  );
   return (
     <>
       <Card className='flex'>
@@ -39,38 +62,23 @@ const Transactions = () => {
                 <Table.HeadCell>Status</Table.HeadCell>
               </Table.Head>
               <Table.Body className='divide-y'>
-                <Table.Row>
+                {paginatedTransactions.map(transaction=>(
+                  <Table.Row>
                   <Table.Cell>2.20pm</Table.Cell>
                   <Table.Cell>17/03/22</Table.Cell>
-                  <Table.Cell>LQ478488485</Table.Cell>
+                  <Table.Cell>{transaction.transactionReference}</Table.Cell>
                   <Table.Cell>Francis Ifeanyi</Table.Cell>
-                  <Table.Cell>Bills</Table.Cell>
-                  <Table.Cell>NGN 14,000</Table.Cell>
+                  <Table.Cell>{transaction.productName}</Table.Cell>
+                  <Table.Cell>{transaction.currency} {transaction.amount}</Table.Cell>
                   <Table.Cell>
+                    {transaction.status.toLowerCase() =="completed" || transaction.status.toLowerCase() =="successful" ? 
                     <div class="rounded-lg bg-green-300 p-2 flex items-center justify-center h-full">
-                      Success
-                    </div>
-
-                  </Table.Cell>
-                  <Table.Cell>
-                    {/* <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                      ...
-                    </a> */}
-                    <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>2.20pm</Table.Cell>
-                  <Table.Cell>17/03/22</Table.Cell>
-                  <Table.Cell>LQ478488485</Table.Cell>
-                  <Table.Cell>Francis Ifeanyi</Table.Cell>
-                  <Table.Cell>Bills</Table.Cell>
-                  <Table.Cell>USD 14,000</Table.Cell>
-                  <Table.Cell>
+                      {transaction.status}
+                    </div>:
                     <div class="rounded-lg bg-red-400 p-2 flex items-center justify-center h-full">
-                      Failed
+                      {transaction.status}
                     </div>
-
+                    }
                   </Table.Cell>
                   <Table.Cell>
                     {/* <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
@@ -79,25 +87,12 @@ const Transactions = () => {
                     <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
                   </Table.Cell>
                 </Table.Row>
-                <Table.Row>
-                  <Table.Cell>2.20pm</Table.Cell>
-                  <Table.Cell>17/03/22</Table.Cell>
-                  <Table.Cell>LQ478488485</Table.Cell>
-                  <Table.Cell>Francis Ifeanyi</Table.Cell>
-                  <Table.Cell>Bills</Table.Cell>
-                  <Table.Cell>CAD 14,000</Table.Cell>
-                  <Table.Cell>
-                    <div class="rounded-lg bg-yellow-300 p-2 flex items-center justify-center h-full ">
-                      Pending
-                    </div>
-
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
-                  </Table.Cell>
-                </Table.Row>
+                ))}
               </Table.Body>
             </Table>
+            <div className='"flex overflow-x-auto sm:justify-center'>
+              <Pagination  currentPage={currentPage} totalPages={pages}  onPageChange={onPageChange} showIcons/>
+            </div>
         </div>
       </Card>
     </>

@@ -9,7 +9,7 @@ const ServiceDetails = () => {
     <>
     <Card className='mb-6'>
         <div className='flex items-center'>
-            <Link to="/services"><BiArrowBack/></Link>
+            <Link to="/service"><BiArrowBack/></Link>
             <h4 className='font-bold mr-auto ml-4'> #{details}</h4>
         </div>
     </Card>

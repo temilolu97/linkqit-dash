@@ -1,6 +1,7 @@
 import { Button, Card, Table, Tabs, TextInput } from 'flowbite-react'
 import React from 'react'
 import {HiSearch, HiFilter} from 'react-icons/hi'
+import { Link } from 'react-router-dom'
 
 const Service = () => {
   return (
@@ -35,8 +36,10 @@ const Service = () => {
 
                   </Table.Cell>
                   <Table.Cell>
-                    <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
+                    <Link to="/services/LQ478488485">
+                      <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
 
+                    </Link>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>

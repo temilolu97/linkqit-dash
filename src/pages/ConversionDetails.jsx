@@ -1,17 +1,33 @@
 import { Card } from 'flowbite-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import arrow from '../assets/arrow-swap.png'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { BiArrowBack } from 'react-icons/bi'
+import apiRequest from '../helpers/HttpRequestHelper'
 
 const ConversionDetails = () => {
-    const {details} = useParams()
+    const [users, setUsers] = useState([])
+    const {state} = useLocation()
+    console.log(state);
+    useEffect(() => {
+        const fetchUsers = async()=>{
+            let token = localStorage.getItem("token")
+            let response = await apiRequest("get","/customers/all",null,{"Authorization":`Bearer ${token}`})
+            setUsers(response.data)
+            console.log(response.data)
+          }
+          fetchUsers()
+    }, []);
+
+    let user = users.find(i => i.id == state.customerId);
+
+    
   return (
     <>
         <Card className='mb-6'>
             <div className='flex items-center'>
                 <Link to="/convert"><BiArrowBack/></Link>
-                <h4 className='font-bold mr-auto ml-4'> #{details}</h4>
+                <h4 className='font-bold mr-auto ml-4'> {state.transactionReference}</h4>
             </div>
         </Card>
         <Card>
@@ -20,7 +36,7 @@ const ConversionDetails = () => {
                     <div className='flex gap-6'>
                         <div>
                             <p>From</p>
-                            <h2 className='font-bold text-xl'>NGN 14,000</h2>
+                            <h2 className='font-bold text-xl'>{state.currency} {state.amount}</h2>
                         </div>
                         <div>
                             <img src={arrow}/>
@@ -46,7 +62,7 @@ const ConversionDetails = () => {
                         </div>
                         <div className='ml-auto'>
                             <p>Transaction ID</p>
-                            <p>{details}</p>
+                            <p>{state.transactionReference}</p>
                         </div>
                     </div>    
                 </li>
@@ -70,7 +86,7 @@ const ConversionDetails = () => {
                     <div className='flex'>
                         <div>
                             <p className='text-sm'>Customer</p>
-                            <p className="text-lg font-bold">Ifeanyi Ifeanyi</p>
+                            <p className="text-lg font-bold">Ifeanyu</p>
                         </div>
                         <div className='ml-auto'>
                             <p className='text-sm'>User ID</p>
@@ -82,7 +98,7 @@ const ConversionDetails = () => {
                     <div className='flex'>
                         <div>
                             <p className='text-sm'>Email Address</p>
-                            <p className="text-lg font-bold">Ifeanyi Ifeanyi</p>
+                            <p className="text-lg font-bold">testemail@gmail.com</p>
                         </div>
                         <div className='ml-auto'>
                             <p className='text-sm'>To</p>

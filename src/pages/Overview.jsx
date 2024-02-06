@@ -1,8 +1,24 @@
 import { Card, Table, Tabs } from 'flowbite-react'
 import React from 'react'
+import { Line } from 'react-chartjs-2'
+
+// import { useAuth } from '../contexts/AuthContext'
+import { Navigate, useNavigate } from 'react-router-dom'
+import 'chart.js/auto';
 
 const Overview = () => {
-  let data
+  const navigate= useNavigate()
+  const data = {
+    labels: ['January', 'February', 'March', 'April', 'May','June','July','August','September','October','November','December'],
+    datasets: [
+      {
+        label: 'Monthly inflows',
+        data: [65, 59, 80, 81, 56,32,68,56,83,67,57,60],
+        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: 'rgba(75,192,192,0.2)',
+      },
+    ],
+  };
   return (
     <>
     <div className='columns-3'>
@@ -39,6 +55,9 @@ const Overview = () => {
             </Tabs>
           </div>
         </div>
+        <div>
+            <Line data={data}/>
+          </div>
       </Card>
     </div>
     <div className='mt-20'>
