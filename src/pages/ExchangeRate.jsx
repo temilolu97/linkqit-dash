@@ -8,8 +8,9 @@ import uk from '../assets/uk 2.png'
 import {BiArrowBack} from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 import apiRequest from '../helpers/HttpRequestHelper'
-const SwapRate = () => {
+const ExchangeRate = () => {
     const [ rates, setRates] = useState([])
+    const [newRate, setNewRate] = useState()
     const [flag, setFlag] = useState()
     const currencyNames = {
         USD: {
@@ -53,17 +54,17 @@ const SwapRate = () => {
         <Card className='mb-4'>
             <div className='flex items-center'>
                 <Link to="/swap"><BiArrowBack/></Link>
-                <h4 className='font-bold mr-auto ml-4'> Change swap rate</h4>
+                <h4 className='font-bold mr-auto ml-4'> Change exchange rate</h4>
             </div>
         </Card>
         <Card>
-        {rates.map(rate =>{
+        {rates.map((rate,index) =>{
             let fromCurrency = getCurrencyName(rate.fromCurrency).name
             let fromFlag = getCurrencyName(rate.fromCurrency).flag
             let toCurrency = getCurrencyName(rate.toCurrency).name
             let toFlag = getCurrencyName(rate.toCurrency).flag
          return( 
-        <div className='flex items-center'>
+        <div key={index} className='flex items-center'>
          
             <div className='flex flex-row gap-4'>
                 <div>
@@ -80,7 +81,7 @@ const SwapRate = () => {
                     <p className='mb-2'>{toCurrency}</p>
                     <div class="relative mx-auto w-96">
                         <img src={toFlag} alt="Flag" class="absolute top-1/2 transform -translate-y-1/2 left-2 w-14 h-auto"/>
-                        <input type="text" value={`${rate.rateAmount} ${rate.toCurrency}`} class="w-full h-20 pl-12 pr-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"/>
+                        <input type="text" value={`${rate.rateAmount} ${rate.toCurrency}`} onChange={(e)=>setNewRate(e.target.value)} class="w-full h-20 pl-12 pr-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"/>
                     </div>
                 </div>
             </div>
@@ -96,4 +97,4 @@ const SwapRate = () => {
   )
 }
 
-export default SwapRate
+export default ExchangeRate

@@ -26,7 +26,7 @@ const Login = ({setIsLoggedIn}) => {
         <p className='text-left font-bold'>Log in to back office </p>
         <form className='flex flex-col gap-4'>
           <div>
-            <div className='mb-2 block'>
+            <div className='mb-2 block text-left'>
               <Label className='text-left' htmlFor='email' value='Email' />
             </div>
             <TextInput id='email1' type='email' placeholder='' value={email} required onChange={e=>setEmail(e.target.value)} />

@@ -1,11 +1,16 @@
-import { Card, Table, Tabs, TextInput,Checkbox, Button, Dropdown, Pagination } from 'flowbite-react'
-import React, { useEffect, useState } from 'react'
+import { Card, Table, Tabs, TextInput,Checkbox, Button, Dropdown, Pagination, DropdownItem } from 'flowbite-react'
+import React, { useEffect, useRef, useState } from 'react'
 import {HiSearch, HiFilter} from 'react-icons/hi'
 import {FaEllipsisH} from 'react-icons/fa'
 import apiRequest from '../helpers/HttpRequestHelper'
+import { Link } from 'react-router-dom'
 const Users = () => {
   const [users, setUsers] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
+  const [isOpen, setIsOpen] = useState(false);
+ // const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+
+  
 
   const onPageChange = (page) => setCurrentPage(page);
 
@@ -25,6 +30,8 @@ const Users = () => {
     (currentPage - 1) * 10,
     currentPage * 10
   );
+
+
   return (
     <Card className='mt-10'>
     <div className='flex justify-between'>
@@ -59,13 +66,18 @@ const Users = () => {
                 </Table.Cell>
                 <Table.Cell>
                   <div className="font-medium text-black-600 hover:underline dark:text-cyan-500">
-                      <FaEllipsisH/>
+                      <Dropdown label={<FaEllipsisH/>} arrowIcon={false} inline outline className='border-none' placement='bottom'>
+                        <Link to={`/users/transactions/${user.id}`}><DropdownItem>View Details</DropdownItem></Link>
+                        <DropdownItem>Deactivate User</DropdownItem>
+                      </Dropdown>
                   </div>
+                  
                 </Table.Cell>
             </Table.Row>
             ))}
           </Table.Body>
         </Table>
+
         <div className='"flex overflow-x-auto sm:justify-center'>
           <Pagination  currentPage={currentPage} totalPages={pages}  onPageChange={onPageChange} showIcons/>
         </div>

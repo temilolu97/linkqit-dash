@@ -1,5 +1,6 @@
-import { Button, Card, Table, Tabs, TextInput } from 'flowbite-react'
+import { Button, Card, Dropdown, DropdownItem, Table, Tabs, TextInput } from 'flowbite-react'
 import React from 'react'
+import { FaEllipsisH } from 'react-icons/fa'
 import {HiSearch, HiFilter} from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 
@@ -36,10 +37,9 @@ const Service = () => {
 
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to="/services/LQ478488485">
-                      <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
-
-                    </Link>
+                    <Dropdown label={<FaEllipsisH/>} arrowIcon={false} inline outline className='border-none' placement='bottom'>
+                      <DropdownItem>View Details</DropdownItem>
+                    </Dropdown>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -59,7 +59,9 @@ const Service = () => {
                     {/* <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                       ...
                     </a> */}
-                    <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
+                    <Dropdown label={<FaEllipsisH/>} arrowIcon={false} inline outline className='border-none' placement='bottom'>
+                        <DropdownItem>View Details</DropdownItem>
+                    </Dropdown>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -79,7 +81,9 @@ const Service = () => {
                     {/* <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                       ...
                     </a> */}
-                    <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
+                    <Dropdown label={<FaEllipsisH/>} arrowIcon={false} inline outline className='border-none' placement='bottom'>
+                        <DropdownItem>View Details</DropdownItem>
+                      </Dropdown>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>

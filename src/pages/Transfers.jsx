@@ -1,9 +1,33 @@
-import { Button, Card, Table, TextInput } from 'flowbite-react'
-import React from 'react'
+import { Button, Card, Dropdown, DropdownItem, Pagination, Table, TextInput } from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
+import { FaEllipsisH } from 'react-icons/fa'
 import { HiSearch,HiFilter } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
+import apiRequest from '../helpers/HttpRequestHelper'
 
 const Transfers = () => {
+  const [transactions, setTransactions] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const onPageChange = (page) => setCurrentPage(page);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        let token = localStorage.getItem("token");
+        let response = await apiRequest("get", "/transactions/all", null, { "Authorization": `Bearer ${token}` });
+        console.log(response.data);
+        setTransactions(response.data);
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+    fetchTransactions();
+  }, [currentPage]);
+
+  const filteredTransactions = transactions.filter(transaction =>transaction.transactionReference.startsWith('LQT-PAYOUT'));
+  const paginatedTransactions = filteredTransactions.slice((currentPage - 1) * 10, currentPage * 10);
+  console.log(filteredTransactions);
   return (
     <Card className='mt-10'>
         <div className='flex justify-between'>
@@ -24,65 +48,35 @@ const Transfers = () => {
                 <Table.HeadCell>Status</Table.HeadCell>
               </Table.Head>
               <Table.Body className='divide-y'>
-                <Table.Row>
+                {paginatedTransactions.map(transaction=>(
+                  <Table.Row>
                   <Table.Cell>2.20pm</Table.Cell>
                   <Table.Cell>17/03/22</Table.Cell>
-                  <Table.Cell>LQ478488485</Table.Cell>
+                  <Table.Cell>{transaction.transactionReference}</Table.Cell>
                   <Table.Cell>Francis Ifeanyi</Table.Cell>
-                  <Table.Cell>Bills</Table.Cell>
-                  <Table.Cell>NGN 14,000</Table.Cell>
+                  <Table.Cell>Local</Table.Cell>
+                  <Table.Cell>{transaction.currency} {transaction.amount}</Table.Cell>
                   <Table.Cell>
-                    <div class="rounded-lg bg-green-300 p-2 flex items-center justify-center h-full">
-                      Success
+                    <div className={`rounded-lg p-2 flex items-center justify-center h-full ${transaction.status.toLowerCase() === "completed" || transaction.status.toLowerCase() === "successful" ? 'bg-green-300' : 'bg-red-400'}`}>
+                      {transaction.status}
                     </div>
-
                   </Table.Cell>
                   <Table.Cell>
                     {/* <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
                       ...
                     </a> */}
-                    <Link to="/transfers/1234"><Button gradientMonochrome="lime" size="xs">View details</Button></Link>
+                    <Dropdown label={<FaEllipsisH/>} arrowIcon={false} inline outline className='border-none' placement='bottom'>
+                        <DropdownItem><Link to={`${transaction.transactionReference}`} state={transaction}>View Details</Link></DropdownItem>
+                    </Dropdown>
                   </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>2.20pm</Table.Cell>
-                  <Table.Cell>17/03/22</Table.Cell>
-                  <Table.Cell>LQ478488485</Table.Cell>
-                  <Table.Cell>Francis Ifeanyi</Table.Cell>
-                  <Table.Cell>Bills</Table.Cell>
-                  <Table.Cell>USD 14,000</Table.Cell>
-                  <Table.Cell>
-                    <div class="rounded-lg bg-red-400 p-2 flex items-center justify-center h-full">
-                      Failed
-                    </div>
-
-                  </Table.Cell>
-                  <Table.Cell>
-                    {/* <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                      ...
-                    </a> */}
-                    <Link to="/transfers/1234"><Button gradientMonochrome="lime" size="xs">View details</Button></Link>                    
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>2.20pm</Table.Cell>
-                  <Table.Cell>17/03/22</Table.Cell>
-                  <Table.Cell>LQ478488485</Table.Cell>
-                  <Table.Cell>Francis Ifeanyi</Table.Cell>
-                  <Table.Cell>Bills</Table.Cell>
-                  <Table.Cell>CAD 14,000</Table.Cell>
-                  <Table.Cell>
-                    <div class="rounded-lg bg-yellow-300 p-2 flex items-center justify-center h-full ">
-                      Pending
-                    </div>
-
-                  </Table.Cell>
-                  <Table.Cell>
-                  <Link to="/transfers/1234"><Button gradientMonochrome="lime" size="xs">View details</Button></Link>
-                  </Table.Cell>
-                </Table.Row>
+                </Table.Row>  
+                ))}
+              
               </Table.Body>
             </Table>
+            <div className='flex justify-center'>
+              <Pagination currentPage={currentPage} totalPages={Math.ceil(filteredTransactions.length / 10)} onPageChange={onPageChange} showIcons />
+            </div>
         </div>
       </Card>
   )

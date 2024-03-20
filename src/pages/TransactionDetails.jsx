@@ -1,32 +1,18 @@
 import { Card } from 'flowbite-react'
-import React, { useEffect, useState } from 'react'
-import arrow from '../assets/arrow-swap.png'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import React from 'react'
 import { BiArrowBack } from 'react-icons/bi'
-import apiRequest from '../helpers/HttpRequestHelper'
+import { Link, useLocation } from 'react-router-dom'
+import arrow from '../assets/arrow-swap.png'
 
-const ConversionDetails = ({props}) => {
-    const [users, setUsers] = useState([])
+
+const TransactionDetails = () => {
     const {state} = useLocation()
     console.log(state);
-    useEffect(() => {
-        const fetchUsers = async()=>{
-            let token = localStorage.getItem("token")
-            let response = await apiRequest("get","/customers/all",null,{"Authorization":`Bearer ${token}`})
-            setUsers(response.data)
-            console.log(response.data)
-          }
-          fetchUsers()
-    }, []);
-
-    let user = users.find(i => i.id == state.customerId);
-
-    
   return (
     <>
         <Card className='mb-6'>
             <div className='flex items-center'>
-                <Link to="/convert"><BiArrowBack/></Link>
+                <Link to="/transactions"><BiArrowBack/></Link>
                 <h4 className='font-bold mr-auto ml-4'> {state.transactionReference}</h4>
             </div>
         </Card>
@@ -35,16 +21,16 @@ const ConversionDetails = ({props}) => {
                 <li className='py-3'>
                     <div className='flex gap-6'>
                         <div>
-                            <p>From</p>
+                            <p className='text-left'>Amount</p>
                             <h2 className='font-bold text-xl'>{state.currency} {state.amount}</h2>
                         </div>
-                        <div>
+                        {/* <div>
                             <img src={arrow}/>
                         </div>
                         <div>
                             <p>To</p>
                             <h2 className='font-bold text-xl'>{state.foreignCurrency} {state.foreignAmount}</h2>
-                        </div>
+                        </div> */}
                         <div className='ml-auto'>
                             <p className='text-right'>Status</p>
                             <div className="bg-green-200 p-2 text- rounded-full flex items-center">
@@ -58,7 +44,7 @@ const ConversionDetails = ({props}) => {
                     <div className='flex'>
                         <div>
                             <p className='text-left'>Payment type</p>
-                            <p className='font-bold text-left'>Currency Conversion</p>
+                            <p className='font-bold text-left'>{state.transactionReference.startsWith("LQT-CONVERT") ?"Currency conversion": state.transactionReference.startsWith("LQT-BILL") ? "Bill Payment" :state.transactionReference.startsWith("LQT-AIRTIME")?"Airtime Payment":state.transactionReference.startsWith("LQT-FUND")?"Balance Funding":"Transfer"}</p>
                         </div>
                         <div className='ml-auto'>
                             <p className='text-right'>Transaction ID</p>
@@ -112,4 +98,4 @@ const ConversionDetails = ({props}) => {
   )
 }
 
-export default ConversionDetails
+export default TransactionDetails

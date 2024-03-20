@@ -1,12 +1,15 @@
 import { Card, Table, Tabs } from 'flowbite-react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Line } from 'react-chartjs-2'
-
-// import { useAuth } from '../contexts/AuthContext'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import 'chart.js/auto';
+import { useAuth } from '../contexts/AuthContext';
 
 const Overview = () => {
+  let user = JSON.parse(localStorage.getItem("user"))
+  let {transactionsCount} = useAuth()
+  console.log(transactionsCount);
+
   const navigate= useNavigate()
   const data = {
     labels: ['January', 'February', 'March', 'April', 'May','June','July','August','September','October','November','December'],
@@ -19,23 +22,26 @@ const Overview = () => {
       },
     ],
   };
+
   return (
     <>
-    <div className='columns-3'>
-      <Card className='max-w-sm'>
+    <Card className=' mb-4 w-full'>
+      <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p>
+    </Card>
+    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+      <Card className='max-w-full'>
         <div>
           <p>Transaction Value</p>
           <p className='font-bold text-lg'>$420,000</p>
         </div>
-      
       </Card>
-      <Card className='max-w-sm'>
+      <Card className='max-w-full'>
         <div>
-            <p>Swap Value</p>
-            <p className='font-bold text-lg'>$420,000</p>
+            <p>Total Transactions</p>
+            <p className='font-bold text-lg'>{transactionsCount}</p>
         </div>
       </Card>
-      <Card className='max-w-sm'>
+      <Card className='max-w-full'>
         <div>
           <p>No of customers</p>
           <p className='font-bold text-lg'>0</p>
@@ -43,7 +49,7 @@ const Overview = () => {
       </Card>
     </div>
     <div className='mt-20'>
-      <Card>
+      <Card className='w-full'>
         <div className='flex'>
           <p className='font-bold text-lg'>Analytics</p>
           <div className='ml-auto'>
@@ -55,13 +61,15 @@ const Overview = () => {
             </Tabs>
           </div>
         </div>
-        <div>
-            <Line data={data}/>
-          </div>
+        <div className='overflow-x-auto'>
+            <div className=''>
+              <Line data={data}/>
+            </div>
+        </div>
       </Card>
     </div>
     <div className='mt-20'>
-      <Card>
+      <Card className='w-full'>
         <div className='flex'>
           <p className='font-bold text-lg'>Recent Activity</p>
           <div className='ml-auto'>
@@ -93,10 +101,9 @@ const Overview = () => {
                 <Table.Cell>Bills</Table.Cell>
                 <Table.Cell>Transfer</Table.Cell>
                 <Table.Cell>
-                  <div class="rounded-lg bg-green-300 p-2 flex items-center justify-center h-full">
+                  <div className="rounded-lg bg-green-300 p-2 flex items-center justify-center h-full">
                     Success
                   </div>
-
                 </Table.Cell>
                 <Table.Cell>
                   <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
@@ -104,44 +111,7 @@ const Overview = () => {
                   </a>
                 </Table.Cell>
               </Table.Row>
-              <Table.Row>
-                <Table.Cell>2.20pm</Table.Cell>
-                <Table.Cell>17/03/22</Table.Cell>
-                <Table.Cell>LQ478488485</Table.Cell>
-                <Table.Cell>Francis Ifeanyi</Table.Cell>
-                <Table.Cell>Bills</Table.Cell>
-                <Table.Cell>Transfer</Table.Cell>
-                <Table.Cell>
-                  <div class="rounded-lg bg-red-400 p-2 flex items-center justify-center h-full">
-                    Failed
-                  </div>
-
-                </Table.Cell>
-                <Table.Cell>
-                  <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                    Edit
-                  </a>
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>2.20pm</Table.Cell>
-                <Table.Cell>17/03/22</Table.Cell>
-                <Table.Cell>LQ478488485</Table.Cell>
-                <Table.Cell>Francis Ifeanyi</Table.Cell>
-                <Table.Cell>Bills</Table.Cell>
-                <Table.Cell>Transfer</Table.Cell>
-                <Table.Cell>
-                  <div class="rounded-lg bg-yellow-300 p-2 flex items-center justify-center h-full ">
-                    Pending
-                  </div>
-
-                </Table.Cell>
-                <Table.Cell>
-                  <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                    Edit
-                  </a>
-                </Table.Cell>
-              </Table.Row>
+              {/* More table rows here */}
             </Table.Body>
           </Table>
         </div>

@@ -13,7 +13,6 @@ import Swap from './pages/Swap'
 import Management from './pages/Management'
 import Users from './pages/Users'
 import Service from './pages/Service'
-import SwapRate from './pages/SwapRate'
 import ConversionDetails from './pages/ConversionDetails'
 import ServiceDetails from './pages/ServiceDetails'
 import TransferDetails from './pages/TransferDetails'
@@ -21,6 +20,13 @@ import Login from './pages/Login'
 import { useEffect } from 'react'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import ProtectedRoutes from './components/ProtectedRoutes'
+import ManageRoles from './pages/ManageRoles'
+import AddRole from './pages/AddRole'
+import AddEmployee from './pages/AddEmployee'
+import EmployeeDetails from './pages/EmployeeDetails'
+import UserTransactions from './pages/UserTransactions'
+import ExchangeRate from './pages/ExchangeRate'
+import TransactionDetails from './pages/TransactionDetails'
 
 function App() {
   return (
@@ -41,6 +47,11 @@ function App() {
             <ProtectedRoutes>
               <Transactions />
             </ProtectedRoutes>} />
+            <Route path='/transactions/:id' element={
+              <ProtectedRoutes>
+              <TransactionDetails />
+            </ProtectedRoutes>
+            }/>
             <Route path="/transfers" element={
               <ProtectedRoutes>
                   <Transfers />
@@ -70,9 +81,9 @@ function App() {
               <Users />
             </ProtectedRoutes>
             }/>
-            <Route path='/swap/rates' element={
+            <Route path='/convert/rates' element={
               <ProtectedRoutes>
-              <SwapRate />
+              < ExchangeRate/>
             </ProtectedRoutes>
             }/>
             <Route path="/convert/:details" element={<ProtectedRoutes>
@@ -87,6 +98,31 @@ function App() {
               <ProtectedRoutes>
               <TransferDetails />
             </ProtectedRoutes>
+            }/>
+            <Route path='/manage-roles' element={
+              <ProtectedRoutes>
+                <ManageRoles/>
+              </ProtectedRoutes>
+            }/>
+            <Route path='/add-role' element={
+              <ProtectedRoutes>
+                <AddRole/>
+              </ProtectedRoutes>
+            }/>
+            <Route path='/add-employee' element={
+              <ProtectedRoutes>
+                <AddEmployee/>
+              </ProtectedRoutes>
+            }/>
+            <Route path='/employees/:id' element={
+              <ProtectedRoutes>
+                <EmployeeDetails/>
+              </ProtectedRoutes>
+            }/>
+            <Route path='/users/transactions/:id' element={
+              <ProtectedRoutes>
+                <UserTransactions/>
+              </ProtectedRoutes>
             }/>
           </Routes>
     </AuthProvider>

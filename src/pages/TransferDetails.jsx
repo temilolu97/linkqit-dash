@@ -1,17 +1,18 @@
 import { Card } from 'flowbite-react'
 import React from 'react'
 import arrow from '../assets/arrow-swap.png'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { BiArrowBack } from 'react-icons/bi'
 
 const TransferDetails = () => {
     const {id} = useParams()
+    const {state} = useLocation()
   return (
     <>
     <Card className='mb-6'>
         <div className='flex items-center'>
             <Link to="/transfers"><BiArrowBack/></Link>
-            <h4 className='font-bold mr-auto ml-4'> #{id}</h4>
+            <h4 className='font-bold mr-auto ml-4'> #{state.transactionReference}</h4>
         </div>
     </Card>
     <Card>
@@ -20,13 +21,13 @@ const TransferDetails = () => {
                 <div className='flex gap-6'>
                     <div>
                         <p className='text-sm text-left'>Amount</p>
-                        <h2 className='font-bold text-xl'>NGN 14,000</h2>
+                        <h2 className='font-bold text-xl'>{state.currency} {state.amount}</h2>
                     </div>
                     <div className='ml-auto'>
                         <p>Status</p>
                         <div className="bg-green-200 p-2 text- rounded-full flex items-center">
                             <div className="bg-green-500 h-2 w-2 rounded-full mr-2"></div>
-                            <p>Success</p>
+                            <p>{state.status}</p>
                         </div>
                     </div>
                 </div>
@@ -35,7 +36,7 @@ const TransferDetails = () => {
                 <div className='flex'>
                     <div>
                         <p className='text-sm text-left'>Payment type</p>
-                        <p className='font-bold text-left'>Bills</p>
+                        <p className='font-bold text-left'>Payout</p>
                     </div>
                     <div className='ml-auto'>
                         <p className='text-sm text-right'>Transaction ID</p>

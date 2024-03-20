@@ -38,10 +38,10 @@ const ProtectedRoutes = ({children}) => {
     }, [isAuthenticated, navigate]);
 
     return (
-        <div>
-            <NavigationBar/>
-            <div className='flex'>
-                <Sidebar/>
+        <div className='flex'>
+            <Sidebar/>
+            <div className='flex flex-grow flex-col md:flex-col sm:flex-col'>
+                <NavigationBar/>
                 <div className="flex-grow ml-6 mt-6">
                     {children}
                 </div>

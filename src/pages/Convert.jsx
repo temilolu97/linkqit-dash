@@ -35,7 +35,10 @@ const Convert = () => {
     <Card className='mt-10'>
     <div className='flex justify-between'>
       <TextInput icon={HiSearch} className='w-60'/>
-      <TextInput icon={HiFilter} value="Filter" className='w-40' disabled/>
+      <div className='flex gap-2'>
+        <TextInput icon={HiFilter} value="Filter" className='w-40' disabled/>
+        <Link to="/convert/rates"><Button className='rounded-none' color='blue'>CHANGE EXCHANGE RATE</Button></Link>
+      </div>
     </div>
     <div className='overflow-x-auto'>
         <Table>

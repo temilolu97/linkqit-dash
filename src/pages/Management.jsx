@@ -1,6 +1,7 @@
 import { Card, Table, Tabs, TextInput,Checkbox, Button } from 'flowbite-react'
 import React from 'react'
 import {HiSearch, HiFilter} from 'react-icons/hi'
+import { Link } from 'react-router-dom'
 
 const Management = () => {
   return (
@@ -11,8 +12,8 @@ const Management = () => {
         <Button color="gray" className='w-40'>
             <HiFilter/>Filter
         </Button>
-        <Button className='rounded-none' color='gray'>MANAGE ROLES</Button>
-        <Button className='rounded-none' color='blue'>ADD NEW EMPLOYEE</Button>
+        <Link to="/manage-roles"><Button className='rounded-none' color='gray'>MANAGE ROLES</Button></Link>
+        <Link to="/add-employee"><Button className='rounded-none' color='blue'>ADD NEW EMPLOYEE</Button></Link>
       </div>
     </div>
     <div className='overflow-x-auto'>
@@ -39,9 +40,9 @@ const Management = () => {
 
               </Table.Cell>
               <Table.Cell>
-                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  ...
-                </a>
+                <Link to="/employees/1" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                  View details
+                </Link>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -58,9 +59,9 @@ const Management = () => {
 
               </Table.Cell>
               <Table.Cell>
-                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  ...
-                </a>
+                <Link to="/employees/2" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                  View details
+                </Link>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -77,9 +78,9 @@ const Management = () => {
 
               </Table.Cell>
               <Table.Cell>
-                <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  ...
-                </a>
+                <Link to="/employees/3" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                  View details
+                </Link>
               </Table.Cell>
             </Table.Row>
           </Table.Body>

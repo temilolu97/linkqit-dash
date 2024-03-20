@@ -10,6 +10,7 @@ export const AuthProvider =({children}) =>{
         user:null,
         token:null
     })
+    const [transactionsCount, setTransactionsCount] = useState(0)
     let navigate = useNavigate()
     
     // useEffect(()=>{
@@ -70,7 +71,7 @@ export const AuthProvider =({children}) =>{
     }
 
     return (
-        <AuthContext.Provider value={{ authState, login, logout}}>
+        <AuthContext.Provider value={{ authState, login, logout, transactionsCount, setTransactionsCount}}>
           {children}
         </AuthContext.Provider>
     );
