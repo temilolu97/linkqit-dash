@@ -32,7 +32,7 @@ const Login = ({setIsLoggedIn}) => {
             <TextInput id='email1' type='email' placeholder='' value={email} required onChange={e=>setEmail(e.target.value)} />
           </div>
           <div>
-            <div className='mb-2 block'>
+            <div className='mb-2 block text-left'>
               <Label htmlFor='password' value='Your password' />
             </div>
             <TextInput id='password' type='password' value={password} required onChange={e=>setPassword(e.target.value)} />
