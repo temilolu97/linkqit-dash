@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_BASE_URL = 'https://admin-api-service-dev.eks-linkqit.com/api/v1/admin';
-
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {

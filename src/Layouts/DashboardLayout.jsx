@@ -4,12 +4,13 @@ import SidebarComponent from '../components/SidebarComponent'
 const DashboardLayout = ({children}) => {
   return (
     <>
-        <div className=''>
+        <div className='flex mx-4'>
             <SidebarComponent/>
-            <div className=" ml-6 mt-6">
+            <div className="flex-grow ml-6 mt-6">
               <NavigationBar/>
-
-                {children}
+                <div className='mb-4'>
+                  {children}
+                </div>
             </div>
         </div>
         

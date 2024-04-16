@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom'
 
 const Management = () => {
   return (
+    <>
+    <div className=' mb-4 w-full'>
+      {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
+      <p className='text-lg font-bold text-left'>Management</p>
+    </div>
     <Card className='mt-10'>
     <div className='flex justify-between'>
       <TextInput icon={HiSearch} className='w-60'/>
@@ -18,7 +23,7 @@ const Management = () => {
     </div>
     <div className='overflow-x-auto'>
         <Table>
-          <Table.Head>
+          <Table.Head className='normal-case'>
             <Table.HeadCell></Table.HeadCell>
             <Table.HeadCell>Name</Table.HeadCell>
             <Table.HeadCell>Email</Table.HeadCell>
@@ -87,6 +92,7 @@ const Management = () => {
         </Table>
     </div>
   </Card>
+  </>
   )
 }
 

@@ -4,7 +4,13 @@ import logo from '../assets/logo.png'
 import { Link } from 'react-router-dom'
 import { FaChartBar, FaExchangeAlt, FaMoneyBill, FaMoneyCheck, FaRandom, FaTools, FaUser, FaUsers } from 'react-icons/fa'
 import { CDBSidebar, CDBSidebarContent, CDBSidebarHeader, CDBSidebarMenu, CDBSidebarMenuItem,CDBIcon } from 'cdbreact'
-
+import overviewIcon from '../assets/home.png'
+import receipt from '../assets/receipt.png'
+import receiptItem from '../assets/receipt-item.png'
+import send from '../assets/send.png'
+import convertIcon from '../assets/refresh-2.png'
+import managementIcon from '../assets/people.png'
+import userIcon from '../assets/profile.png'
 const SidebarComponent = () => {
   return (
     // <Sidebar>
@@ -79,17 +85,53 @@ const SidebarComponent = () => {
       </CDBSidebarHeader>
       <CDBSidebarContent>
         <CDBSidebarMenu>
-          <Link to="/"><CDBSidebarMenuItem icon='th-large'>Overview</CDBSidebarMenuItem></Link>
-          <Link to="/transactions"><CDBSidebarMenuItem icon='sticky-note'>Transactions</CDBSidebarMenuItem></Link>
-          <Link to="/transfers"><CDBSidebarMenuItem icon='credit-card'>Transfers</CDBSidebarMenuItem></Link>
-          <Link to="/service"><CDBSidebarMenuItem icon='gear'>Services</CDBSidebarMenuItem></Link>
-          <Link to="/convert"><CDBSidebarMenuItem icon='convert'>Convert</CDBSidebarMenuItem></Link>
-          <Link to="/management"><CDBSidebarMenuItem icon='users'>
-              Management
+          <Link to="/"><CDBSidebarMenuItem >
+            <div className='flex gap-1'>
+              <img src={overviewIcon} alt="Overview" />Overview
+            </div>
           </CDBSidebarMenuItem></Link>
-          <Link to="/users"><CDBSidebarMenuItem icon='user'>
-            Users
-          </CDBSidebarMenuItem></Link>
+          <Link to="/transactions">
+            <CDBSidebarMenuItem>
+              <div className='flex gap-1'>
+                <img src={receiptItem} alt="Transactions" />Transactions
+              </div>
+            </CDBSidebarMenuItem>
+          </Link>
+          <Link to="/transfers">
+            <CDBSidebarMenuItem>
+              <div className='flex gap-1'>
+                <img src={send} alt="Transfers" />Transfers
+              </div>
+            </CDBSidebarMenuItem>
+          </Link>
+          <Link to="/service">
+          <CDBSidebarMenuItem>
+              <div className='flex gap-1'>
+                <img src={receipt} alt="Services" />Services
+              </div>
+            </CDBSidebarMenuItem>
+          </Link>
+          <Link to="/convert">
+            <CDBSidebarMenuItem>
+              <div className='flex gap-1'>
+                <img src={convertIcon} alt="Convert" />Convert
+              </div>
+            </CDBSidebarMenuItem>
+          </Link>
+          <Link to="/management">
+            <CDBSidebarMenuItem>
+              <div className='flex gap-1'>
+                <img src={managementIcon} alt="Manageent" />Management
+              </div>
+            </CDBSidebarMenuItem>
+          </Link>
+          <Link to="/users">
+            <CDBSidebarMenuItem>
+              <div className='flex gap-1'>
+                <img src={userIcon} alt="Users" />Users
+              </div>
+            </CDBSidebarMenuItem>
+          </Link>
         </CDBSidebarMenu>
       </CDBSidebarContent>
     </CDBSidebar>

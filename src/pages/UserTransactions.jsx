@@ -1,9 +1,11 @@
-import { Button, Card, Dropdown, DropdownItem, Label, Select, TabItem, Table, Tabs, TextInput } from 'flowbite-react'
+import { Avatar, Button, Card, Dropdown, DropdownItem, Label, Select, TabItem, Table, Tabs, TextInput } from 'flowbite-react'
 import React from 'react'
 import { FaEllipsisH } from 'react-icons/fa'
 import { HiFilter } from 'react-icons/hi'
-
+import {useLocation} from 'react-router-dom'
 const UserTransactions = () => {
+  const {state} = useLocation()
+  console.log(state);
   return (
     <>
         <Card>
@@ -57,7 +59,7 @@ const UserTransactions = () => {
                             <div >
                                 <div className='text-left py-3'>
                                     <p className='text-sm font-thin'>Status</p>
-                                    <div className='rounded bg-yellow-300'>
+                                    <div className='flex justify-center items-center rounded bg-yellow-300 h-6'>
                                         UNVERIFIED
                                     </div>
                                     
@@ -119,7 +121,63 @@ const UserTransactions = () => {
                         </div>
                     </div>
                 </Tabs.Item>
-                <Tabs.Item title="Profile">Profile</Tabs.Item>
+                <Tabs.Item title="Profile">
+                  <div className='flex justify-between'>
+                    <div class="flex justify-start items-center mb-10">
+                      <div class="mb-10 ml-6">
+                        <Avatar rounded/>
+                        <p className='text-orange-400 font-bold'>Tap to change photo</p>
+                      </div>
+                    </div>
+                    <div>
+                      <Button className='rounded-none border text-blue-400' color='white'>EDIT PROFILE</Button>
+                    </div>
+                </div>
+
+                  <div className='grid grid-cols-2'>                          
+                      <div className='text-left'>
+                        
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Customer Id</p>
+                          <p>{state.username}</p>
+                        </div>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Customer full name</p>
+                          <p>{state.firstName} {state.lastName}</p>
+                        </div>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Phone number</p>
+                          <p>{state.mobileNumber}</p>
+                        </div>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Email address</p>
+                          <p>{state.emailAddress}</p>
+                        </div>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Gender</p>
+                          <p>{state.gender}</p>
+                        </div>
+                      </div>
+                      <div className='text-left'>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Date of birth</p>
+                          <p>{state.dateOfBirth}</p>
+                        </div>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Home address</p>
+                          <p>Lagos</p>
+                        </div>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>State</p>
+                          <p>Lagos</p>
+                        </div>
+                        <div className='mb-4'>
+                          <p className='text-sm font-thin'>Country</p>
+                          <p>Nigeria</p>
+                        </div>
+                      </div>
+                    </div>
+                </Tabs.Item>
             </Tabs>
             </div>
             

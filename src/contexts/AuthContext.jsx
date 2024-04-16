@@ -11,6 +11,7 @@ export const AuthProvider =({children}) =>{
         token:null
     })
     const [transactionsCount, setTransactionsCount] = useState(0)
+    
     let navigate = useNavigate()
     
     // useEffect(()=>{
@@ -54,7 +55,7 @@ export const AuthProvider =({children}) =>{
         console.log(authState);
         localStorage.setItem("token", token)
         localStorage.setItem("user", JSON.stringify(user))
-        localStorage.setItem("isAuthenticated", authState.isAuthenticated)
+        localStorage.setItem("isAuthenticated", true)
         navigate("/overview")
     };
 

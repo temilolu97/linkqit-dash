@@ -6,6 +6,11 @@ import { Link } from 'react-router-dom'
 
 const Service = () => {
   return (
+    <>
+    <div className=' mb-4 w-full'>
+      {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
+      <p className='text-lg font-bold text-left'>Services</p>
+    </div>
     <Card className='mt-10'>
         <div className='flex justify-between'>
           <TextInput icon={HiSearch} className='w-60'/>
@@ -13,7 +18,8 @@ const Service = () => {
         </div>
         <div className='overflow-x-auto'>
             <Table>
-              <Table.Head>
+              <Table.Head className='normal-case'>
+                <Table.HeadCell>S/N</Table.HeadCell>
                 <Table.HeadCell>Time</Table.HeadCell>
                 <Table.HeadCell>Date</Table.HeadCell>
                 <Table.HeadCell>Transaction ID</Table.HeadCell>
@@ -24,6 +30,7 @@ const Service = () => {
               </Table.Head>
               <Table.Body className='divide-y'>
                 <Table.Row>
+                  <Table.Cell>1</Table.Cell>
                   <Table.Cell>2.20pm</Table.Cell>
                   <Table.Cell>17/03/22</Table.Cell>
                   <Table.Cell>LQ478488485</Table.Cell>
@@ -43,6 +50,7 @@ const Service = () => {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
+                  <Table.Cell>2</Table.Cell>
                   <Table.Cell>2.20pm</Table.Cell>
                   <Table.Cell>17/03/22</Table.Cell>
                   <Table.Cell>LQ478488485</Table.Cell>
@@ -65,6 +73,7 @@ const Service = () => {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
+                  <Table.Cell>3</Table.Cell>
                   <Table.Cell>2.20pm</Table.Cell>
                   <Table.Cell>17/03/22</Table.Cell>
                   <Table.Cell>LQ478488485</Table.Cell>
@@ -90,6 +99,7 @@ const Service = () => {
             </Table>
         </div>
       </Card>
+      </>
   )
 }
 

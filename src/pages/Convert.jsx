@@ -1,21 +1,23 @@
-import { Button, Card, Pagination, Table, Tabs, TextInput } from 'flowbite-react'
+import { Button, Card, Pagination, Spinner, Table, Tabs, TextInput } from 'flowbite-react'
 import React, { useEffect, useState } from 'react'
 import {HiSearch, HiFilter} from 'react-icons/hi'
 import apiRequest from '../helpers/HttpRequestHelper'
 import { Link } from 'react-router-dom'
 const Convert = () => {
   const [transactions, setTransactions] = useState([])
-
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
   const onPageChange = (page) => setCurrentPage(page);
 
   useEffect(()=>{
     const fetchTransactions =async () =>{
+      setLoading(true);
       let token = localStorage.getItem("token")
       console.log(token);
       let response = await apiRequest("get","/transactions/all",null,{"Authorization":`Bearer ${token}`})
       setTransactions(response.data)
+      setLoading(false);
       console.log(response.data)
     }
     fetchTransactions()
@@ -32,6 +34,11 @@ const Convert = () => {
     currentPage * 10
   );
   return (
+    <>
+    <div className=' mb-4 w-full'>
+      {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
+      <p className='text-lg font-bold text-left'>Convert</p>
+    </div>
     <Card className='mt-10'>
     <div className='flex justify-between'>
       <TextInput icon={HiSearch} className='w-60'/>
@@ -41,8 +48,12 @@ const Convert = () => {
       </div>
     </div>
     <div className='overflow-x-auto'>
+      {loading ? (
+        <Spinner size="xl"/>
+      ):(
         <Table>
-          <Table.Head>
+          <Table.Head className='normal-case'>
+            <Table.HeadCell>S/N</Table.HeadCell>
             <Table.HeadCell>Time</Table.HeadCell>
             <Table.HeadCell>Date</Table.HeadCell>
             <Table.HeadCell>Transaction ID</Table.HeadCell>
@@ -52,8 +63,9 @@ const Convert = () => {
             <Table.HeadCell>Status</Table.HeadCell>
           </Table.Head>
           <Table.Body className='divide-y'>
-            {paginatedTransactions.map(transaction =>(
+            {paginatedTransactions.map((transaction,index) =>(
               <Table.Row>
+                <Table.Cell>{index+1}</Table.Cell>
                 <Table.Cell>2.20pm</Table.Cell>
                 <Table.Cell>17/03/22</Table.Cell>
                 <Table.Cell>{transaction.transactionReference}</Table.Cell>
@@ -77,58 +89,14 @@ const Convert = () => {
               </Table.Row>
             ))}
 
-            <Table.Row>
-              <Table.Cell>2.20pm</Table.Cell>
-              <Table.Cell>17/03/22</Table.Cell>
-              <Table.Cell>LQ478488485</Table.Cell>
-              <Table.Cell>Francis Ifeanyi</Table.Cell>
-              <Table.Cell>NGN 14,000</Table.Cell>
-              <Table.Cell>USD 10</Table.Cell>
-              <Table.Cell>
-                <div class="rounded-lg bg-red-400 p-2 flex items-center justify-center h-full">
-                  Failed
-                </div>
-
-              </Table.Cell>
-              <Table.Cell>
-                <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
-                {/* {isDropdownVisible && (
-                    <div className='absolute mt-2 '>
-                    <div className='bg-white rounded-md shadow-lg p-2'>
-                        <p>Hello</p>
-                    </div>
-                    </div>
-                )} */}
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>2.20pm</Table.Cell>
-              <Table.Cell>17/03/22</Table.Cell>
-              <Table.Cell>LQ478488485</Table.Cell>
-              <Table.Cell>Francis Ifeanyi</Table.Cell>
-              <Table.Cell>NGN 14,000</Table.Cell>
-              <Table.Cell>USD 10</Table.Cell>
-              <Table.Cell>
-                <div class="rounded-lg bg-yellow-300 p-2 flex items-center justify-center h-full ">
-                  Pending
-                </div>
-
-              </Table.Cell>
-              <Table.Cell>
-                {/* <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  ...
-                </a> */}
-                <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
-
-              </Table.Cell>
-            </Table.Row>
           </Table.Body>
-        </Table>
-        <div className='"flex overflow-x-auto sm:justify-center'>
+        </Table>)}
+        <div className='flex overflow-x-auto sm:justify-center'>
           <Pagination  currentPage={currentPage} totalPages={pages}  onPageChange={onPageChange} showIcons/>
         </div>
     </div>
   </Card>
+  </>
   )
 }
 

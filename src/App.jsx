@@ -27,6 +27,7 @@ import EmployeeDetails from './pages/EmployeeDetails'
 import UserTransactions from './pages/UserTransactions'
 import ExchangeRate from './pages/ExchangeRate'
 import TransactionDetails from './pages/TransactionDetails'
+import RateUpdate from './pages/RateUpdate'
 
 function App() {
   return (
@@ -84,6 +85,11 @@ function App() {
             <Route path='/convert/rates' element={
               <ProtectedRoutes>
               < ExchangeRate/>
+            </ProtectedRoutes>
+            }/>
+            <Route path='/convert/rates/:id' element={
+              <ProtectedRoutes>
+              <RateUpdate/>
             </ProtectedRoutes>
             }/>
             <Route path="/convert/:details" element={<ProtectedRoutes>
