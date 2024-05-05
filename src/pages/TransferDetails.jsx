@@ -3,12 +3,16 @@ import React from 'react'
 import arrow from '../assets/arrow-swap.png'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { BiArrowBack } from 'react-icons/bi'
+import { Helmet } from 'react-helmet'
 
 const TransferDetails = () => {
     const {id} = useParams()
     const {state} = useLocation()
   return (
     <>
+    <Helmet>
+      <title>Transfer Details</title>
+    </Helmet>
     <Card className='mb-6'>
         <div className='flex items-center'>
             <Link to="/transfers"><BiArrowBack/></Link>

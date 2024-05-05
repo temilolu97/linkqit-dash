@@ -1,11 +1,15 @@
 import { Card, Table, Tabs, TextInput,Checkbox, Button } from 'flowbite-react'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import {HiSearch, HiFilter} from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 
 const Management = () => {
   return (
     <>
+    <Helmet>
+      <title>Management</title>
+    </Helmet>
     <div className=' mb-4 w-full'>
       {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
       <p className='text-lg font-bold text-left'>Management</p>

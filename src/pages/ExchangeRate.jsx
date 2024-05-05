@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import apiRequest from '../helpers/HttpRequestHelper'
 import ChangeExchangeRateModal from '../components/ChangeExchangeRateModal'
 import { CDBModal } from 'cdbreact'
+import { Helmet } from 'react-helmet'
 const ExchangeRate = () => {
     const [ rates, setRates] = useState([])
     const [newRate, setNewRate] = useState()
@@ -64,8 +65,53 @@ const ExchangeRate = () => {
           }
           fetchRates()
     },[])
+
+    // const pairedRates = [];
+    // rates.forEach((rate) => {
+    //     const inverseRate = {
+    //         fromCurrency: rate.toCurrency,
+    //         toCurrency: rate.fromCurrency,
+    //         rateAmount: 1 / rate.rateAmount,
+    //     };
+
+    //     pairedRates.push(rate, inverseRate);
+    // });
+    // console.log(pairedRates);
+    function reorderCurrencyPairs(pairs) {
+        console.log(pairs);
+        let reorderedPairs = [];
+        let visited = new Set();
+    
+        for (let i = 0; i < pairs.length; i++) {
+            let pair = pairs[i];
+            
+            let fromCurrency = pair.fromCurrency;
+            let toCurrency = pair.toCurrency;
+            
+            let currencyPair = { fromCurrency: toCurrency, toCurrency: fromCurrency };
+            let inversePair = pairs.find(p => p.fromCurrency == currencyPair.fromCurrency && p.toCurrency == currencyPair.toCurrency)
+            if (!visited.has(JSON.stringify(pair)) && !visited.has(JSON.stringify(inversePair))) {
+                // Add the pair and its inverse to the reordered list
+                reorderedPairs.push(pair);
+                reorderedPairs.push(inversePair);
+    
+                // Mark both the pair and its inverse as visited
+                visited.add(JSON.stringify(pair));
+                visited.add(JSON.stringify(inversePair));
+            }
+            
+
+        }
+    
+        return reorderedPairs;
+    }
+
+    let reorderedPair = reorderCurrencyPairs(rates)
   return (
     <>
+        <Helmet>
+        <title>Exchange Rates</title>
+        </Helmet>
         <Card className='mb-4'>
             <div className='flex items-center'>
                 <Link to="/convert"><BiArrowBack/></Link>
@@ -74,11 +120,12 @@ const ExchangeRate = () => {
         </Card>
         {loading ? <Spinner size="xl"/>:(
         <Card className='mb-4'>
-        {rates.map((rate,index) =>{
+        {reorderedPair.map((rate,index) =>{
             let fromCurrency = getCurrencyName(rate.fromCurrency).name
             let fromFlag = getCurrencyName(rate.fromCurrency).flag
             let toCurrency = getCurrencyName(rate.toCurrency).name
             let toFlag = getCurrencyName(rate.toCurrency).flag
+
          return( 
         <div key={index} className='flex items-center'>
          

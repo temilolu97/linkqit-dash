@@ -1,9 +1,11 @@
-import { Button, Card, Pagination, Spinner, Table, Tabs, TextInput} from 'flowbite-react';
+import { Button, Card, Dropdown, DropdownItem, Pagination, Spinner, Table, Tabs, TextInput} from 'flowbite-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { HiSearch, HiFilter } from 'react-icons/hi';
 import apiRequest from '../helpers/HttpRequestHelper';
 import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+import { FaEllipsisH } from 'react-icons/fa';
 
 const Transactions = () => {
   let {setTransactionsCount, transactionsCount} = useAuth()
@@ -13,6 +15,7 @@ const Transactions = () => {
   const tabsRef = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('')
 
   const onPageChange = (page) => setCurrentPage(page);
   const startIndex = (currentPage - 1) * 10;
@@ -31,6 +34,11 @@ const Transactions = () => {
     const month = date.getMonth() + 1;
     const year = date.getFullYear().toString().slice(-2);
     return `${day}/${month}/${year}`;
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1);
   };
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -57,8 +65,16 @@ const Transactions = () => {
   };
 
   // Filter transactions based on active tab
-  filteredTransactions = activeTab === 0 ? transactions :activeTab ===1? 
-  transactions.filter(transaction =>transaction.transactionReference.startsWith('LQT-PAYOUT')): activeTab ===2 ? transactions.filter(transaction =>transaction.transactionReference.startsWith('LQT-BILLS')) : activeTab === 3 ? transactions.filter(transaction =>transaction.transactionReference.startsWith('LQT-AIRTIME')) : transactions;
+  filteredTransactions = transactions.filter(transaction =>
+    (activeTab === 0 || activeTab === 'All Transactions') ||
+    (activeTab === 1 && transaction.transactionReference.startsWith('LQT-PAYOUT')) ||
+    (activeTab === 2 && transaction.transactionReference.startsWith('LQT-BILLS')) ||
+    (activeTab === 3 && transaction.transactionReference.startsWith('LQT-AIRTIME')) ||
+    (activeTab === 4 && transaction.transactionReference.startsWith('LQT-PAYOUT')) 
+  ).filter(transaction =>
+    transaction.transactionReference.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+;
 
   transactionsCount = filteredTransactions.length
   const totalAmount = filteredTransactions.reduce((acc, transaction) => {
@@ -66,6 +82,10 @@ const Transactions = () => {
   }, 0);
   console.log(transactionsCount);
   return (
+    <>
+    <Helmet>
+      <title>Transactions</title>
+    </Helmet>
     <div className='w-full'>
       <div className=' mb-4 w-full'>
         {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
@@ -86,7 +106,7 @@ const Transactions = () => {
       </Card>
       <Card className='mt-10'>
         <div className='flex flex-col md:flex-row items-center justify-between'>
-          <TextInput icon={HiSearch} className='w-full md:w-60' placeholder="Search..." />
+          <TextInput icon={HiSearch} className='w-full md:w-60' placeholder="Search by Transaction Id" value={searchQuery} onChange={handleSearchChange} />
           <TextInput icon={HiFilter} value="Filter" className=' md:mt-0 md:w-40' disabled />
         </div>
         <div className>
@@ -131,9 +151,9 @@ const Transactions = () => {
                     </div>
                   </Table.Cell>
                   <Table.Cell>
-                    <Link to={`${transaction.transactionReference}`} state={transaction}>
-                      <Button size="xs" outline gradientDuoTone="purpleToBlue">View Details</Button>
-                    </Link>
+                    <Dropdown label={<FaEllipsisH/>} arrowIcon={false} inline outline className='border-none' placement='bottom'>
+                        <DropdownItem><Link to={`${transaction.transactionReference}`} state={transaction}>View Details</Link></DropdownItem>
+                    </Dropdown>
                   </Table.Cell>
                 </Table.Row>
               ))}
@@ -147,6 +167,7 @@ const Transactions = () => {
         </div>
       </Card>
     </div>
+    </>
   );
 }
 

@@ -3,10 +3,14 @@ import React from 'react'
 import arrow from '../assets/arrow-swap.png'
 import { Link, useParams } from 'react-router-dom'
 import { BiArrowBack } from 'react-icons/bi'
+import { Helmet } from 'react-helmet'
 const ServiceDetails = () => {
     const {details} = useParams()
   return (
     <>
+    <Helmet>
+      <title>Service Details</title>
+    </Helmet>
     <Card className='mb-6'>
         <div className='flex items-center'>
             <Link to="/service"><BiArrowBack/></Link>

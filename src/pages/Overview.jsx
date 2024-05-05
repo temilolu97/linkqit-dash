@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import 'chart.js/auto';
 import { useAuth } from '../contexts/AuthContext';
 import AnalyticsChart from '../components/AnalyticsChart';
+import { Helmet } from 'react-helmet';
 
 const Overview = () => {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -42,6 +43,9 @@ const Overview = () => {
 
   return (
     <>
+    <Helmet>
+      <title>Overview</title>
+    </Helmet>
     <div className=' mb-4 w-full'>
       {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
       <p className='text-lg font-bold text-left'>Overview</p>

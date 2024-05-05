@@ -1,5 +1,6 @@
 import { Button, Card, Dropdown, DropdownItem, Table, Tabs, TextInput } from 'flowbite-react'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { FaEllipsisH } from 'react-icons/fa'
 import {HiSearch, HiFilter} from 'react-icons/hi'
 import { Link } from 'react-router-dom'
@@ -7,6 +8,9 @@ import { Link } from 'react-router-dom'
 const Service = () => {
   return (
     <>
+    <Helmet>
+      <title>Service</title>
+    </Helmet>
     <div className=' mb-4 w-full'>
       {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
       <p className='text-lg font-bold text-left'>Services</p>

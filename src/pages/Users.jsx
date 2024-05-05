@@ -4,18 +4,20 @@ import {HiSearch, HiFilter} from 'react-icons/hi'
 import {FaEllipsisH} from 'react-icons/fa'
 import apiRequest from '../helpers/HttpRequestHelper'
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 const Users = () => {
   const [users, setUsers] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
  // const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
 
   
 
   const onPageChange = (page) => setCurrentPage(page);
+  let filteredUsers =[]
 
-  let pages = Math.ceil(users.length/20)
   const startIndex = (currentPage - 1) * 10;
 
 
@@ -31,21 +33,34 @@ const Users = () => {
     fetchUsers()
    },[])
 
-   const paginatedUsers = users.slice(
+   filteredUsers = users.filter(user =>
+    user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.lastName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    user.emailAddress.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+   const paginatedUsers = filteredUsers.slice(
     (currentPage - 1) * 10,
     currentPage * 10
   );
-
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1);
+  };
 
   return (
     <>
+    <Helmet>
+      <title>Users</title>
+    </Helmet>
     <div className=' mb-4 w-full'>
       {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
       <p className='text-lg font-bold text-left'>User</p>
     </div>
     <Card className='mt-10'>
     <div className='flex justify-between'>
-      <TextInput icon={HiSearch} className='w-60'/>
+      <TextInput icon={HiSearch} className='w-60' placeholder='Username or Email' value={searchQuery} onChange={handleSearchChange}/>
       <Button color="gray" className='w-40'>
         <HiFilter/>Filter
       </Button>
@@ -95,7 +110,7 @@ const Users = () => {
         </Table>
 
         <div className='flex justify-center'>
-          <Pagination  currentPage={currentPage} totalPages={pages}  onPageChange={onPageChange} showIcons/>
+          <Pagination  currentPage={currentPage} totalPages={Math.ceil(filteredUsers.length/20)}  onPageChange={onPageChange} showIcons/>
         </div>
     </div>
   </Card>

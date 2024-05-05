@@ -57,7 +57,7 @@ const ProtectedRoutes = ({children}) => {
     //         </div>
             
     // </div>
-        <DashboardLayout>
+        <DashboardLayout >
             {children}
         </DashboardLayout>
     )

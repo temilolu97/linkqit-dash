@@ -128,7 +128,7 @@ const SidebarComponent = () => {
           <Link to="/users">
             <CDBSidebarMenuItem>
               <div className='flex gap-1'>
-                <img src={userIcon} alt="Users" />Users
+                <img src={userIcon} alt="Users" />Customers
               </div>
             </CDBSidebarMenuItem>
           </Link>

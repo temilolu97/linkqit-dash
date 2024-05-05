@@ -1,5 +1,6 @@
 import { Avatar, Button, Card, Dropdown, DropdownItem, Label, Select, TabItem, Table, Tabs, TextInput } from 'flowbite-react'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import { FaEllipsisH } from 'react-icons/fa'
 import { HiFilter } from 'react-icons/hi'
 import {useLocation} from 'react-router-dom'
@@ -8,6 +9,9 @@ const UserTransactions = () => {
   console.log(state);
   return (
     <>
+      <Helmet>
+        <title>User Transactions</title>
+      </Helmet>
         <Card>
         <div>
             <div className=''>

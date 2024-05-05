@@ -4,11 +4,13 @@ import { FaEllipsisH } from 'react-icons/fa'
 import { HiSearch,HiFilter } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 import apiRequest from '../helpers/HttpRequestHelper'
+import { Helmet } from 'react-helmet'
 
 const Transfers = () => {
   const [transactions, setTransactions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('')
 
 
   const onPageChange = (page) => setCurrentPage(page);
@@ -31,7 +33,8 @@ const Transfers = () => {
     fetchTransactions();
   }, [currentPage]);
 
-  const filteredTransactions = transactions.filter(transaction =>transaction.transactionReference.startsWith('LQT-PAYOUT'));
+  const filteredTransactions = transactions.filter(transaction =>transaction.transactionReference.startsWith('LQT-PAYOUT') 
+  && transaction.transactionReference.toLowerCase().includes(searchQuery.toLowerCase()));
   const paginatedTransactions = filteredTransactions.slice((currentPage - 1) * 10, currentPage * 10);
   console.log(filteredTransactions);
   const formatTime = (timestamp) => {
@@ -49,15 +52,23 @@ const Transfers = () => {
     const year = date.getFullYear().toString().slice(-2);
     return `${day}/${month}/${year}`;
   };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1);
+  };
   return (
     <>
+    <Helmet>
+      <title>Transfers</title>
+    </Helmet>
     <div className=' mb-4 w-full'>
       {/* <p className='font-bold text-lg'>Welcome {user.firstName} {user.lastName}</p> */}
       <p className='text-lg font-bold text-left'>Transfers</p>
     </div>
     <Card className='mt-10'>
         <div className='flex justify-between'>
-          <TextInput icon={HiSearch} className='w-60'/>
+          <TextInput icon={HiSearch} className='w-60' value={searchQuery} onChange={handleSearchChange}/>
           <Button color="gray" className='w-40'>
             <HiFilter/>Filter
           </Button>

@@ -1,10 +1,15 @@
 import { Button, Card, Table, Tabs, TextInput } from 'flowbite-react'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import {HiSearch, HiFilter} from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 
 const Swap = () => {
   return (
+    <>
+    <Helmet>
+      <title>Overview</title>
+    </Helmet>
     <Card className='mt-10'>
     <div className='flex justify-between'>
       <TextInput icon={HiSearch} className='w-60'/>
@@ -88,6 +93,7 @@ const Swap = () => {
         </Table>
     </div>
   </Card>
+  </>
   )
 }
 
