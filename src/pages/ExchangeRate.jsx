@@ -65,7 +65,7 @@ const ExchangeRate = () => {
           }
           fetchRates()
     },[])
-
+ 
     // const pairedRates = [];
     // rates.forEach((rate) => {
     //     const inverseRate = {
