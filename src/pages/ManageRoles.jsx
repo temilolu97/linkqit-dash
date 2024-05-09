@@ -1,10 +1,25 @@
 import { Button, Card, Checkbox, Table, TextInput } from 'flowbite-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiArrowBack } from 'react-icons/bi'
 import { HiFilter, HiSearch } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
+import apiRequest from '../helpers/HttpRequestHelper'
 
 const ManageRoles = () => {
+  const [roles, setRoles] = useState([])
+  const [loading, setLoading] = useState(true)
+  useEffect(()=>{
+    const fetchRoles =async () =>{
+      setLoading(true)
+      let token = localStorage.getItem("token")
+      console.log(token);
+      let response = await apiRequest("get","/management/roles",null,{"Authorization":`Bearer ${token}`})
+      setRoles(response.data)
+      setLoading(false)
+      console.log(response.data)
+    }
+    fetchRoles()
+  }, [])
   return (
     <>
         <Card>
@@ -31,27 +46,16 @@ const ManageRoles = () => {
             <Table.HeadCell>Description</Table.HeadCell>
           </Table.Head>
           <Table.Body className='divide-y'>
-            <Table.Row>
-              <Table.Cell>
-                <Checkbox/>
-              </Table.Cell>
-              <Table.Cell>Admin</Table.Cell>
-              <Table.Cell>This role grants permission to everything on the dashboard</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>
-                <Checkbox/>
-              </Table.Cell>
-              <Table.Cell>Sales</Table.Cell>
-              <Table.Cell>This role grants permission to everything sales</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>
-                <Checkbox/>
-              </Table.Cell>
-              <Table.Cell>Tech</Table.Cell>
-              <Table.Cell>This role grants permission to everything tech</Table.Cell>
-            </Table.Row>
+            {roles.map(role => (
+              <Table.Row>
+                <Table.Cell>
+                  <Checkbox/>
+                </Table.Cell>
+                <Table.Cell>{role.role}</Table.Cell>
+                <Table.Cell>{role.roleDescription}</Table.Cell>
+              </Table.Row>
+            ))}
+          
           </Table.Body>
         </Table>
     </div>

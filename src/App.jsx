@@ -120,7 +120,7 @@ function App() {
                 <AddEmployee/>
               </ProtectedRoutes>
             }/>
-            <Route path='/employees/:id' element={
+            <Route path='/management/employees/:id' element={
               <ProtectedRoutes>
                 <EmployeeDetails/>
               </ProtectedRoutes>

@@ -1,10 +1,38 @@
-import { Card, Table, Tabs, TextInput,Checkbox, Button } from 'flowbite-react'
-import React from 'react'
+import { Card, Table, Tabs, TextInput,Checkbox, Button, Spinner } from 'flowbite-react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import {HiSearch, HiFilter} from 'react-icons/hi'
 import { Link } from 'react-router-dom'
+import apiRequest from '../helpers/HttpRequestHelper'
 
 const Management = () => {
+  const [employees, setEmployees] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [roles, setRoles] = useState([])
+  useEffect(()=>{
+    const fetchEmployees =async () =>{
+      setLoading(true)
+      let token = localStorage.getItem("token")
+      let response = await apiRequest("get","/management/employees",null,{"Authorization":`Bearer ${token}`})
+      setEmployees(response.data)
+      setLoading(false)
+      console.log(response.data)
+    }
+    const fetchRoles = async () =>{
+      setLoading(true)
+      let token = localStorage.getItem("token")
+      console.log(token);
+      let response = await apiRequest("get","/management/roles",null,{"Authorization":`Bearer ${token}`})
+      setRoles(response.data)
+      setLoading(false)
+      console.log(response.data)
+      }
+  
+    fetchEmployees()
+    fetchRoles()
+  }, [])
+
+ 
   return (
     <>
     <Helmet>
@@ -35,63 +63,42 @@ const Management = () => {
             <Table.HeadCell>Status</Table.HeadCell>
           </Table.Head>
           <Table.Body className='divide-y'>
-            <Table.Row>
-              <Table.Cell>
-                <Checkbox/>
-              </Table.Cell>
-              <Table.Cell>Francis Ifeanyi</Table.Cell>
-              <Table.Cell>francisifeanyi@gmail.com</Table.Cell>
-              <Table.Cell>Manager</Table.Cell>
-              <Table.Cell>
-                <div class="rounded-lg bg-blue-300 p-2 flex items-center justify-center h-full">
-                  VERIFIED
-                </div>
+            { 
+              loading ? <Spinner /> :(
+              employees.map(employee=> {
+               const getRoleById = (roleId) =>{
+                let data = roles.find(role => role.id == roleId)
+                return data ? data.role : "Role not found";
 
-              </Table.Cell>
-              <Table.Cell>
-                <Link to="/employees/1" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  View details
-                </Link>
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>
-                <Checkbox/>
-              </Table.Cell>
-              <Table.Cell>Francis Ifeanyi</Table.Cell>
-              <Table.Cell>francisifeanyi@gmail.com</Table.Cell>
-              <Table.Cell>Sales Rep</Table.Cell>
-              <Table.Cell>
-                <div class="rounded-lg bg-orange-300 p-2 flex items-center justify-center h-full">
-                  UNVERIFIED
-                </div>
+              }
+              let role = getRoleById(employee.roleId)
+              return(<Table.Row>
+                <Table.Cell>
+                  <Checkbox/>
+                </Table.Cell>
+                <Table.Cell>{employee.firstName} {employee.lastName}</Table.Cell>
+                <Table.Cell>{employee.emailAddress}</Table.Cell>
+                <Table.Cell>{role}</Table.Cell>
+                <Table.Cell>
+                  {employee.isEmailVerified ?
+                  <div class="rounded-lg bg-blue-300 p-2 flex items-center justify-center h-full">
+                    VERIFIED
+                  </div>: <div class="rounded-lg bg-orange-300 p-2 flex items-center justify-center h-full">
+                    UNVERIFIED
+                  </div>}
 
-              </Table.Cell>
-              <Table.Cell>
-                <Link to="/employees/2" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  View details
-                </Link>
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>
-                <Checkbox/>
-              </Table.Cell>
-              <Table.Cell>Francis Ifeanyi</Table.Cell>
-              <Table.Cell>francisifeanyi@gmail.com</Table.Cell>
-              <Table.Cell>Mid Level Engineer</Table.Cell>
-              <Table.Cell>
-                <div class="rounded-lg bg-blue-300 p-2 flex items-center justify-center h-full">
-                  VERIFIED
-                </div>
-
-              </Table.Cell>
-              <Table.Cell>
-                <Link to="/employees/3" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                  View details
-                </Link>
-              </Table.Cell>
-            </Table.Row>
+                </Table.Cell>
+                <Table.Cell>
+                  <Link to={`employees/${employee.id}`} state= {{
+                      employeeData: employee,
+                      role:role 
+                    }}
+                   className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
+                    View details
+                  </Link>
+                </Table.Cell>
+              </Table.Row>
+            )}))}
           </Table.Body>
         </Table>
     </div>

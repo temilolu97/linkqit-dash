@@ -1,10 +1,74 @@
 import { Button, Card, Checkbox, TextInput, Textarea } from 'flowbite-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiArrowBack } from 'react-icons/bi'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import apiRequest from '../helpers/HttpRequestHelper'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddRole = () => {
+    const [permissions, setPermissions] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [roleName, setRoleName] = useState('')
+    const [roleDescription, setRoleDescrption] = useState('')
+    const [selectedPermissions, setSelectedPermissions] = useState({});
+
+    const navigate = useNavigate()
+    useEffect(()=>{
+      const fetchPermissions =async () =>{
+        setLoading(true)
+        let token = localStorage.getItem("token")
+        console.log(token);
+        let response = await apiRequest("get","/management/permissions",null,{"Authorization":`Bearer ${token}`})
+        setPermissions(response.data)
+        setLoading(false)
+        console.log(response.data)
+      }
+      fetchPermissions()
+    }, [])
+
+    const handlePermissionChange = (permissionDescription, category, checked) => {
+        setSelectedPermissions(prevState => ({
+            ...prevState,
+            [category]: {
+                ...prevState[category],
+                [permissionDescription]: checked
+            }
+        }));
+    };
+
+    const AddNewRole = async(roleName, roleDescription) =>{
+        let token = localStorage.getItem("token")
+        const formattedPermissions = Object.entries(selectedPermissions).map(([category, permissions]) => ({
+            [category]: Object.entries(permissions)
+                .filter(([_, isChecked]) => isChecked)
+                .map(([permissionDescription, _]) => permissionDescription)
+        })).reduce((acc, curr) => ({ ...acc, ...curr }), {});
+        console.log(formattedPermissions);
+        let data = {
+            roleName: roleName,
+            roleDescription: roleDescription,
+            permissions: formattedPermissions
+        }
+        console.log(data);
+        const response =await apiRequest('post',"/management/roles/add",
+            data,{"Authorization":`Bearer ${token}`}
+        )
+        if(response.statusCode == "00"){
+            toast.success(response.message,{
+                onClose: () => {
+                  navigate(-1);
+                }
+            })
+
+        }
+        else{
+            toast.info(response.message)
+        }
+        console.log(response.data);
+    }
   return (
+    
     <>
         <Card>
             <div className='flex items-center'>
@@ -17,60 +81,31 @@ const AddRole = () => {
                 <div className='mr-auto'>
                     <div>
                         <p className='text-left font-bold'>ROLE NAME</p>
-                        <TextInput className='w-64' placeholder='Name your role'/>
+                        <TextInput className='w-64' placeholder='Name your role' value={roleName} onChange={e => setRoleName(e.target.value)}/>
                     </div>
                     <div>
                         <p className='text-left mt-4 font-bold'>PERMISSION</p>
-                        <Textarea rows={4} placeholder='Describe your permission'/>
+                        <Textarea rows={4} placeholder='Describe your role' value={roleDescription} onChange={e => setRoleDescrption(e.target.value)}/>
                     </div>
                 </div>
-                <div className='text-left'>
+                <div className='text-left ml-40'>
                     <p className='text-lg font-bold'>Permissions</p>
-                    <div className='mt-4'>
-                        <h4 className='mb-4'>Transactions</h4>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can view transactions</h4>
-                        </div>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can edit transactions</h4>
-                        </div>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can manage funds and disputes</h4>
-                        </div>
+                    {Object.entries(permissions).map(([category, permissions]) => (
+                    <div className='mt-4' key={category}>
+                        <h4 className='mb-4'>{category.charAt(0).toUpperCase() + category.slice(1)}</h4>
+                        {permissions.map(p =>(
+                            <div className='flex items-center' key={p.id}>
+                                <Checkbox onChange={e => handlePermissionChange(p.description, category, e.target.checked)}/> <h4 className='ml-2 text-sm'>{p.description}</h4>
+                            </div>
+                        ))}
+                        
+                        
                     </div>
-                    <div className='mt-4'>
-                        <h4 className='mb-4'>Customers</h4>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can view transactions</h4>
-                        </div>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can edit transactions</h4>
-                        </div>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can manage funds and disputes</h4>
-                        </div>
+                    ))}
+                    <div>
+                        <Button className='mt-10 rounded-none' color='blue' onClick={()=>AddNewRole(roleName,roleDescription)}>CREATE ROLE</Button>
+                        <ToastContainer/>
                     </div>
-
-                    <div className='mt-4'>
-                        <h4 className='mb-4'>Payouts</h4>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can view payouts</h4>
-                        </div>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can export payouts</h4>
-                        </div>
-                    </div>
-
-                    <div className='mt-4'>
-                        <h4 className='mb-4'>Transfers</h4>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can view transfers</h4>
-                        </div>
-                        <div className='flex items-center'>
-                            <Checkbox/> <h4 className='ml-2 text-sm'>Can export transfers</h4>
-                        </div>
-                    </div>
-                    <Button className='mt-10 rounded-none' color='blue'>CREATE ROLE</Button>
                 </div>
             </div>
         </Card>
