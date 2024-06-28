@@ -6,6 +6,7 @@ import 'chart.js/auto';
 import { useAuth } from '../contexts/AuthContext';
 import AnalyticsChart from '../components/AnalyticsChart';
 import { Helmet } from 'react-helmet';
+import { LineChart } from '@mui/x-charts';
 
 const Overview = () => {
   const [selectedTab, setSelectedTab] = useState(0);

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import {Tabs} from 'flowbite-react'
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
+import { LineChart } from '@mui/x-charts';
 
 
 const AnalyticsChart = () => {
@@ -367,7 +368,15 @@ const AnalyticsChart = () => {
             </Tabs>
           </div>
         </div>
-        <Line data={data}/>
+        {/* <Line data={data}/> */}
+        <LineChart  xAxis={[{ data: filteredChartData.map(item => item.amount) }]}
+        series={[
+          {
+            data: [2, 5.5, 2, 8.5, 1.5, 5],
+          },
+        ]}
+        width={500}
+        height={300}/>
     </div>
   )
 }
